@@ -10,6 +10,7 @@ class ContenedorProductos{
         const mensajes = await this.getAll(); 
         const id = mensajes.length + 1;
         const producto = {...obj, id:id}
+        producto.timestamp = new Date().toLocaleString()
         mensajes.push(producto) 
         console.log(producto)
         try {

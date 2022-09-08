@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 
-/*-------------Importación de las clases----------- */
+/*-------------Importación de las clases y declaración de admin----------- */
 
 const ContenedorProductos = require('./clases/productos');
 const ContenedorCarrito = require('./clases/carrito');
@@ -17,6 +17,7 @@ const ContenedorCarrito = require('./clases/carrito');
 const ContenedorP = new ContenedorProductos('productos.json');
 const ContenedorC = new ContenedorCarrito('carritos.json');
 
+const admin = true;
 /*-------------Router productos----------- */
 
 routerP.get('/:id?', async ( req , res ) => { 
@@ -30,26 +31,41 @@ routerP.get('/:id?', async ( req , res ) => {
 });
 
 routerP.post('/',( req , res ) => {
+    if (admin === true){
   ContenedorP.save(req.body);
-  res.send(`se ha guardado con éxito el siguiente producto: ${JSON.stringify(req.body)}`)  
+  res.send(`se ha guardado con éxito el siguiente producto: ${JSON.stringify(req.body)}`) 
+} else {
+    const error = { error : -1, descripcion: 'ruta api/productos/ método post no autorizada' }
+    res.send(error)
+} 
 });
 
 routerP.put('/:id', async ( req , res ) => {
+    if (admin === true){
     const productoA = await ContenedorP.actualizaproducto(req.params.id , req.body)
     if (productoA){
     res.send(`se actualizó el producto ${JSON.stringify(productoA)}`)
     }   else{
         res.send(`no se encontró el producto`)
     }
+    } else {
+    const error = { error : -1, descripcion: `ruta api/productos/${req.params.id} método put no autorizada` }
+    res.send(error)
+} 
 })
 
 routerP.delete('/:id', async ( req , res ) => {
+    if (admin === true){
     const productoB = await ContenedorP.borrarPorId(req.params.id)
     if (productoB){
     res.send(`se eliminó el producto con id ${req.params.id}`)
     }   else{
         res.send(`no se encontró el producto`)
     }
+    } else {
+    const error = { error : -1, descripcion: `ruta api/productos/${req.params.id} método delete no autorizada` }
+    res.send(error)
+} 
 })
 
 /*-------------Router carrito----------- */
@@ -70,12 +86,17 @@ routerC.post('/', async ( req , res ) => {
 })
 
 routerC.delete('/:id', async ( req , res ) => {
+    if (admin === true){
     const carritoB = await ContenedorC.borrarPorId(req.params.id)
     if (carritoB){
         res.send(`se eliminó el carrito con id ${req.params.id}`)
         } else{
             res.send(`no se encontró el carrito`)
         }
+    } else {
+        const error = { error : -1, descripcion: `ruta api/carrito/${req.params.id} método delete no autorizada` }
+        res.send(error)
+    } 
 })
 
 routerC.get('/:id/productos', async ( req , res ) => {
@@ -113,6 +134,11 @@ routerC.delete('/:id/productos/:id_prod', async ( req , res ) => {
 /*-------------Declaración de rutas base----------- */
 app.use('/api/productos', routerP)
 app.use('/api/carrito', routerC)
+
+app.use('*', (req , res) => {
+    const error = { error : -2, descripcion: `ruta no implementada`};
+    res.send(error)
+})
 
 app.use(express.static('public'))
 

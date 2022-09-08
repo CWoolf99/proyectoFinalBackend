@@ -10,6 +10,7 @@ class ContenedorCarrito{
         const mensajes = await this.getAll(); 
         const id = mensajes.length + 1;
         const carrito = {...obj, id:id}
+        carrito.timestamp = new Date().toLocaleString()
         mensajes.push(carrito) 
         console.log(mensajes)
         try {
