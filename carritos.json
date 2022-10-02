@@ -1,1 +1,1 @@
-[{"productos":[{"nombre":"pruebaAdmin","precio":"22000","imagen":"yes","stock":"2","id":2,"timestamp":"8/9/2022 16:35:13"},{"nombre":"pruebaAdmin","precio":"22000","imagen":"yes","stock":"2","id":1,"timestamp":"8/9/2022 16:35:11"}],"id":1,"timestamp":"8/9/2022 16:35:18"}]
+[{"productos":[{"nombre":"Xbox","descripcion":"descripcion breve del producto","codigo":"numeroRandom","imagen":"https://candied-rightful-shell.glitch.me/api/productos","precio":"16000","stock":"2","id":1,"timestamp":"11/9/2022 17:34:51"}],"id":1,"timestamp":"11/9/2022 18:00:04"}]

@@ -17,7 +17,7 @@ const ContenedorCarrito = require('./clases/carrito');
 const ContenedorP = new ContenedorProductos('productos.json');
 const ContenedorC = new ContenedorCarrito('carritos.json');
 
-const admin = true;
+const admin = false;
 /*-------------Router productos----------- */
 
 routerP.get('/:id?', async ( req , res ) => { 
