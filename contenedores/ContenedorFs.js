@@ -1,6 +1,6 @@
-const {promises:fs} = require('fs');
-
-class ContenedorCarrito{
+//const {promises:fs} = require('fs');
+import { promises as fs } from "fs";
+class ContenedorFs{
     constructor( archivo ){
         this.archivo=archivo;
     }
@@ -83,10 +83,40 @@ class ContenedorCarrito{
         catch (err) {
             return undefined
         }
-    }
+    };
+
+    async actualizaproducto(id, producto) {
+        let productos = await this.getAll();
+        if(productos.find((valor) => valor.id == id)){
+        productos = productos.filter((producto) => producto.id != id)
+        const productoA = {...producto, id: id} 
+        productos.push(productoA);
+        try {
+            await fs.writeFile(`${this.archivo}`, JSON.stringify(productos))
+            return productoA
+        } 
+        catch (err) {
+            return undefined
+        }
+        }
+    };
+
+    async borrarPorId( id ) {
+        let productos = await this.getAll();
+        if(productos.find((valor) => valor.id == id)){
+        productos = productos.filter((producto) => producto.id != id)
+        try {
+            await fs.writeFile(`${this.archivo}`, JSON.stringify(productos))
+            return true
+        } 
+        catch (err) {
+            return false
+        }
+        }
+    };
 
 }
 
 
-module.exports = ContenedorCarrito; 
-
+//module.exports = ContenedorCarrito; 
+export default ContenedorFs;
