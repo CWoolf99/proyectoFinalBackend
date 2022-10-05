@@ -1,8 +1,8 @@
 # proyectoFinalBackend
 #Instalaciones de dependencias de node node
-npm install express
-npm install nodemon
-npm install firebase-admin
+npm install express,
+npm install nodemon,
+npm install firebase-admin,
 npm install mongoose
 
 #Start script
