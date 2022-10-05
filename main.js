@@ -1,4 +1,6 @@
-const express = require('express');
+import  express  from 'express';
+import CarritosDaoFirebs from './daos/carritos/CarritosDaoFirebs.js';
+import ProductosDaoFirebs from './daos/productos/ProductosDaoFirebs.js';
 const { Router } = express;
 
 const app = express();
@@ -10,12 +12,11 @@ app.use(express.urlencoded({ extended: true }))
 
 
 /*-------------Importación de las clases y declaración de admin----------- */
+//const ContenedorProductos = require('./clases/productos');
+//const ContenedorCarrito = require('./clases/carrito');
 
-const ContenedorProductos = require('./clases/productos');
-const ContenedorCarrito = require('./clases/carrito');
-
-const ContenedorP = new ContenedorProductos('productos.json');
-const ContenedorC = new ContenedorCarrito('carritos.json');
+const ContenedorP = new ProductosDaoFirebs();
+const ContenedorC = new CarritosDaoFirebs();
 
 const admin = false;
 /*-------------Router productos----------- */
@@ -73,10 +74,10 @@ routerP.delete('/:id', async ( req , res ) => {
 routerC.post('/', async ( req , res ) => {
     const producto = await ContenedorP.buscarproducto(req.body.id)
     if (producto){
-        const carrito = {productos:[producto]}
+        const carrito = {productos:producto}
         const carritoN = await ContenedorC.crearCarrito(carrito)
         if (carritoN){
-            res.send(JSON.stringify(carritoN))
+            res.send(carritoN)
         } else {
             res.send('error al guardar el carrito')
         }
@@ -102,7 +103,7 @@ routerC.delete('/:id', async ( req , res ) => {
 routerC.get('/:id/productos', async ( req , res ) => {
     const carrito = await ContenedorC.buscarCarrito(req.params.id)
     if (carrito){
-    res.send(JSON.stringify(carrito.productos))
+    res.send(carrito.productos)
     } else {
         res.send('no se encontro el carrito')
     }
